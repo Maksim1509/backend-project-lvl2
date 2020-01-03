@@ -12,18 +12,17 @@ test('default', () => {
 
   const firstDataVersion1 = { time: 100, value: 1, otherValue: 3 };
   const expected2 = {
-    '+otherValue': 3,
+    '-otherValue': 3,
     '-time': 100,
     '+time': 200,
     '-value': 1,
     '+value': 2,
   };
 
-  const secondDataVersion1 = { time: 200, value: 2, otherValue: 350 };
+  const secondDataVersion1 = { time: 100, value: 2, otherValue: 350 };
   const expected3 = {
     '+otherValue': 350,
-    '-time': 100,
-    '+time': 200,
+    time: 100,
     '-value': 1,
     '+value': 2,
   };

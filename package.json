@@ -1,10 +1,10 @@
 {
   "name": "gendiff443",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Compares two configuration files and shows a difference.",
-  "main": "index.js",
+  "main": "src/index.js",
   "bin": {
-    "gendiff": "dist/bin/gendiff.js"
+    "gendiff": "dist/bin/index.js"
   },
   "files": [
     "dist"

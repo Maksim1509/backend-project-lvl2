@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { has } from 'lodash';
 import commander from 'commander';
 import { version as currentVersion } from '../../package.json';
 
@@ -15,7 +16,26 @@ gendiff
 
 gendiff.parse(process.argv);
 
-const { format } = gendiff;
+const addPlusToKeys = (object) => {
+  const entries = Object.entries(object);
+  const result = entries.reduce((acc, [key, value]) => {
+    return ({ ...acc, [`+${key}`]: value });
+  }, {});
+  return result;
+};
 
+const getDiff = (firstData, secondData) => {
+  const keys = Object.keys(firstData);
+  const difference = keys.reduce((acc, key) => {
+    if (has(secondData, key)) {
+      if (firstData[key] === secondData[key]) {
+        return ({ ...acc, [key]: firstData[key] });
+      }
+      return ({ ...acc, [`-${key}`]: firstData[key], [`+${key}`]: secondData[key] });
+    }
+    return ({ ...acc, [`+${key}`]: firstData[key] });
+  }, {});
+  return ({ ...difference, ...addPlusToKeys(secondData) });
+};
 
-console.log(format);
+export default getDiff;

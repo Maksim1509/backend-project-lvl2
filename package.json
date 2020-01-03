@@ -10,12 +10,16 @@
     "dist"
   ],
   "scripts": {
+    "test": "jest",
     "build": "cross-env NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Maksim1509/project-lvl2-s443.git"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "author": "Maksim Abdulkhalikov",
   "license": "ISC",
@@ -42,6 +46,7 @@
     "jest-cli": "^24.9.0"
   },
   "dependencies": {
-    "commander": "^4.0.1"
+    "commander": "^4.0.1",
+    "lodash": "^4.17.15"
   }
 }

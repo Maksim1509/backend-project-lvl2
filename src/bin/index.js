@@ -18,10 +18,7 @@ gendiff.parse(process.argv);
 
 const addPlusToKeys = (object) => {
   const entries = Object.entries(object);
-  const result = entries.reduce((acc, [key, value]) => {
-    return ({ ...acc, [`+${key}`]: value });
-  }, {});
-  return result;
+  return entries.reduce((acc, [key, value]) => ({ ...acc, [`+${key}`]: value }), {});
 };
 
 const getDiff = (firstData, secondData) => {

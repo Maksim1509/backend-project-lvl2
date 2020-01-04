@@ -1,8 +1,8 @@
 import gendiff from '../../src/bin';
 
 test('default', () => {
-  const pathToFile1 = './__tests__/__bin__/before.json';
-  const pathToFile2 = './__tests__/__bin__/after.json';
+  const pathToFile1 = './__tests__/__fixtures__/before.json';
+  const pathToFile2 = './__tests__/__fixtures__/after.json';
 
   const expected = `{
     host: hexlet.io

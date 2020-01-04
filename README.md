@@ -6,6 +6,6 @@
 Пример работы пакета
 <div cursor="pointer">
     <a href="https://asciinema.org/a/p2WVnjSOcZSID117N7dz5dVKv" target="_blank">
-        <img style="height: 250px" src="https://asciinema.org/a/p2WVnjSOcZSID117N7dz5dVKv.svg" />
+        <img src="https://asciinema.org/a/p2WVnjSOcZSID117N7dz5dVKv.svg" height="250px"/>
     </a>
 </div>

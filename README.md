@@ -9,3 +9,9 @@
         <img src="https://asciinema.org/a/p2WVnjSOcZSID117N7dz5dVKv.svg" height="250px"/>
     </a>
 </div>
+<div cursor="pointer">
+    <a href="https://asciinema.org/a/GgC0a7mQBKAYrxsVWyJ3if1b5" target="_blank">
+        <img src="https://asciinema.org/a/GgC0a7mQBKAYrxsVWyJ3if1b5.svg" height="250px"/>
+    </a>
+</div>
+

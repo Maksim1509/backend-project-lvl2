@@ -1,4 +1,4 @@
-import gendiff from '../../src/bin';
+import getDiff from '../../src/bin/getDiff';
 
 test('default', () => {
   const pathToFile1 = './__tests__/__fixtures__/before.json';
@@ -13,6 +13,6 @@ test('default', () => {
   + verbose: true
 }`;
 
-  const actual = gendiff(pathToFile1, pathToFile2);
+  const actual = getDiff(pathToFile1, pathToFile2);
   expect(actual).toEqual(expected);
 });

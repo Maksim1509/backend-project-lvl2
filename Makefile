@@ -11,4 +11,4 @@ publish:
 test:
 	npm test
 test-coverage:
-  npm test -- --coverage
+	npm test -- --coverage

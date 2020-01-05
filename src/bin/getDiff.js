@@ -1,9 +1,16 @@
 import fs from 'fs';
 import { has } from 'lodash';
+import parser from './parser';
 
 export default (pathToFirstFile, pathToSecondFile) => {
-  const firstData = JSON.parse(fs.readFileSync(pathToFirstFile, 'utf8'));
-  const secondData = JSON.parse(fs.readFileSync(pathToSecondFile, 'utf8'));
+  const firstFile = fs.readFileSync(pathToFirstFile, 'utf8');
+  const secondFile = fs.readFileSync(pathToSecondFile, 'utf-8');
+
+  const firstParser = parser(pathToFirstFile);
+  const secondParser = parser(pathToSecondFile);
+
+  const firstData = firstParser(firstFile);
+  const secondData = secondParser(secondFile);
 
   const keys = Object.keys(firstData);
   const differentKeys = Object.keys(secondData).filter((key) => !keys.includes(key));

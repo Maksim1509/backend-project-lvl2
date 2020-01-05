@@ -9,6 +9,9 @@ test('default', () => {
   const pathToFile3 = PATH.join(__dirname, '../__fixtures__/1.yaml');
   const pathToFile4 = PATH.join(__dirname, '../__fixtures__/2.yaml');
 
+  const pathToFile5 = PATH.join(__dirname, '../__fixtures__/1.ini');
+  const pathToFile6 = PATH.join(__dirname, '../__fixtures__/2.ini');
+
   const expected = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/expected.txt'), 'utf-8');
 
   const actual1 = getDiff(pathToFile1, pathToFile2);
@@ -16,4 +19,7 @@ test('default', () => {
 
   const actual2 = getDiff(pathToFile3, pathToFile4);
   expect(actual2).toEqual(expected);
+
+  const actual3 = getDiff(pathToFile5, pathToFile6);
+  expect(actual3).toEqual(expected);
 });

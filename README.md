@@ -14,4 +14,10 @@
         <img src="https://asciinema.org/a/GgC0a7mQBKAYrxsVWyJ3if1b5.svg" height="250px" width="500px"/>
     </a>
 </div>
+<div cursor="pointer">
+    <a href="https://asciinema.org/a/EFfK2h5CDuNPO1EG305OgqJgS" target="_blank">
+        <img src="https://asciinema.org/a/EFfK2h5CDuNPO1EG305OgqJgS.svg" height="250px" width="500px"/>
+    </a>
+</div>
+
 

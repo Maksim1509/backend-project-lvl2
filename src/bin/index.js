@@ -11,7 +11,7 @@ gendiff
   .option('-f, --format [type]', 'Output format', 'plain')
   .arguments('<firstConfig> <secondConfig>')
   .action((firstConfig, secondConfig) => {
-    const diffirence = getDiff(firstConfig, secondConfig);
+    const diffirence = getDiff(firstConfig, secondConfig, gendiff.format);
     console.log(diffirence);
   });
 

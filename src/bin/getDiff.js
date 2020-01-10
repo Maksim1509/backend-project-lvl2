@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { has } from 'lodash';
 import parser from './parser';
+import plainFormating from './formatters/plain';
 
 const mapped = (key, beforeData, afterData) => {
   switch (true) {
@@ -10,6 +11,10 @@ const mapped = (key, beforeData, afterData) => {
     case has(afterData, key): return 'add';
     default: return 'remove';
   }
+};
+
+const getFormatter = {
+  plain: plainFormating,
 };
 
 const getDifferenceAst = (firstData, secondData) => {
@@ -31,48 +36,7 @@ const getDifferenceAst = (firstData, secondData) => {
   return difference;
 };
 
-const stringify = (value, spaces) => {
-  const newSpaces = `${spaces}    `;
-  if (typeof value === 'object') {
-    const keys = Object.keys(value);
-    const string = keys.reduce((acc, key) => {
-      const currentValue = typeof value[key] === 'object' ? stringify(value[key]) : value[key];
-      return [...acc, `${newSpaces}${key}: ${currentValue}`];
-    }, []);
-    return `{\n${string.join('\n')}\n${spaces}}`;
-  }
-  return value;
-};
-
-const getSpaces = (countSpaces) => {
-  let spaces = '';
-  for (let i = 0; i < countSpaces; i += 1) {
-    spaces += ' ';
-  }
-  return spaces;
-};
-
-const render = (ast, spaces) => {
-  const spaceLine = getSpaces(spaces);
-  const shortSpaceLine = spaceLine.slice(2);
-  const res = ast.reduce((acc, item) => {
-    const {
-      type, children, oldValue, newValue,
-    } = item;
-    let string;
-    if (children instanceof Array) string = `${spaceLine}${item.key}: ${render(children, spaceLine.length + 4)}`;
-    else if (type === 'unchanged') string = `${spaceLine}${item.key}: ${stringify(oldValue, spaceLine)}`;
-    else if (type === 'add') string = `${shortSpaceLine}+ ${item.key}: ${stringify(newValue, spaceLine)}`;
-    else if (type === 'remove') string = `${shortSpaceLine}- ${item.key}: ${stringify(oldValue, spaceLine)}`;
-    else if (type === 'changed') {
-      string = `${shortSpaceLine}- ${item.key}: ${stringify(oldValue, spaceLine)}\n${shortSpaceLine}+ ${item.key}: ${stringify(newValue, spaceLine)}`;
-    }
-    return [...acc, string];
-  }, []);
-  return `{\n${res.join('\n')}\n${spaceLine.slice(4)}}`;
-};
-
-export default (pathToFirstFile, pathToSecondFile) => {
+export default (pathToFirstFile, pathToSecondFile, format = 'plain') => {
   const firstFile = fs.readFileSync(pathToFirstFile, 'utf8');
   const secondFile = fs.readFileSync(pathToSecondFile, 'utf-8');
 
@@ -83,6 +47,6 @@ export default (pathToFirstFile, pathToSecondFile) => {
   const secondData = secondParser(secondFile);
 
   const difference = getDifferenceAst(firstData, secondData);
-
-  return render(difference, 4);
+  const formatter = getFormatter[format];
+  return formatter(difference, '');
 };

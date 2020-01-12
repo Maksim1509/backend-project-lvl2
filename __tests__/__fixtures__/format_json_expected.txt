@@ -1,0 +1,56 @@
+{
+  "common": {
+    "setting2": {
+      "type": "remove",
+      "value": 200
+    },
+    "setting3": {
+      "type": "changed",
+      "oldValue": true,
+      "newValue": {
+        "key": "value"
+      }
+    },
+    "setting6": {
+      "ops": {
+        "type": "add",
+        "value": "vops"
+      }
+    },
+    "follow": {
+      "type": "add",
+      "value": false
+    },
+    "setting4": {
+      "type": "add",
+      "value": "blah blah"
+    },
+    "setting5": {
+      "type": "add",
+      "value": {
+        "key5": "value5"
+      }
+    }
+  },
+  "group1": {
+    "nest": {
+      "type": "changed",
+      "oldValue": {
+        "key": "value"
+      },
+      "newValue": "str"
+    }
+  },
+  "group2": {
+    "type": "remove",
+    "value": {
+      "abc": 12345
+    }
+  },
+  "group3": {
+    "type": "add",
+    "value": {
+      "fee": 0
+    }
+  }
+}

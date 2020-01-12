@@ -17,14 +17,14 @@ test('default', () => {
 
   // const expected = fs
   // .readFileSync(PATH.join(__dirname, '../__fixtures__/expected.txt'), 'utf-8');
-  const formatPlain = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_plain_expected.txt'), 'utf-8');
+  const formatPlain = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_json_expected.txt'), 'utf-8');
 
-  const actual1 = getDiff(pathToFile1, pathToFile2);
+  const actual1 = getDiff(pathToFile1, pathToFile2, 'json');
   expect(actual1).toEqual(formatPlain);
 
-  const actual2 = getDiff(pathToFile3, pathToFile4);
+  const actual2 = getDiff(pathToFile3, pathToFile4, 'json');
   expect(actual2).toEqual(formatPlain);
 
-  const actual3 = getDiff(pathToFile5, pathToFile6);
+  const actual3 = getDiff(pathToFile5, pathToFile6, 'json');
   expect(actual3).toEqual(formatPlain);
 });

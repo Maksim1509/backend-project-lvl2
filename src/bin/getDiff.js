@@ -2,6 +2,7 @@ import fs from 'fs';
 import { has } from 'lodash';
 import parser from './parser';
 import plainFormating from './formatters/plain';
+import jsonFormating from './formatters/jsonFormatter';
 
 const mapped = (key, beforeData, afterData) => {
   switch (true) {
@@ -15,6 +16,7 @@ const mapped = (key, beforeData, afterData) => {
 
 const getFormatter = {
   plain: plainFormating,
+  json: jsonFormating,
 };
 
 const getDifferenceAst = (firstData, secondData) => {

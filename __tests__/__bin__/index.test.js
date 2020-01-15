@@ -1,6 +1,6 @@
 import fs from 'fs';
 import PATH from 'path';
-import getDiff from '../../src/bin/getDiff';
+import getDiff from '../../src/getDiff';
 
 const formatJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_json_expected.txt'), 'utf-8');
 const plainJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_plain_expected.txt'), 'utf-8');

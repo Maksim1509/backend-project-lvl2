@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import commander from 'commander';
 import { version as currentVersion } from '../../package.json';
-import getDiff from './getDiff';
+import getDiff from '../getDiff';
 
 const gendiff = new commander.Command();
 

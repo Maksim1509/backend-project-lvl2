@@ -1,6 +1,0 @@
-{
-    "firstKey": "first value",
-    "secondKey": {
-      "secondKeyChild": "2"
-    }
-  }

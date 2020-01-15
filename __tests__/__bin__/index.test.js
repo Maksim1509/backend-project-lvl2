@@ -15,23 +15,23 @@ const beforeINI = PATH.join(__dirname, '../__fixtures__/1.ini');
 const afterINI = PATH.join(__dirname, '../__fixtures__/2.ini');
 
 test('json', () => {
-  const actual1 = getDiff(beforeJSON, afterJSON, 'json');
-  expect(actual1).toEqual(formatJson);
+  const actualJSON1 = getDiff(beforeJSON, afterJSON, 'json');
+  expect(actualJSON1).toEqual(formatJson);
 
-  const actual2 = getDiff(beforeYAML, afterYAML, 'json');
-  expect(actual2).toEqual(formatJson);
+  const actualJSON2 = getDiff(beforeYAML, afterYAML, 'json');
+  expect(actualJSON2).toEqual(formatJson);
 
-  const actual3 = getDiff(beforeINI, afterINI, 'json');
-  expect(actual3).toEqual(formatJson);
+  const actualJSON3 = getDiff(beforeINI, afterINI, 'json');
+  expect(actualJSON3).toEqual(formatJson);
 });
 
 test('plain', () => {
-  const actual1 = getDiff(beforeJSON, afterJSON, 'plain');
-  expect(actual1).toEqual(plainJson);
+  const actualPlain1 = getDiff(beforeJSON, afterJSON, 'plain');
+  expect(actualPlain1).toEqual(plainJson);
 
-  const actual2 = getDiff(beforeYAML, afterYAML, 'plain');
-  expect(actual2).toEqual(plainJson);
+  const actualPlain2 = getDiff(beforeYAML, afterYAML, 'plain');
+  expect(actualPlain2).toEqual(plainJson);
 
-  const actual3 = getDiff(beforeINI, afterINI, 'plain');
-  expect(actual3).toEqual(plainJson);
+  const actualPlain3 = getDiff(beforeINI, afterINI, 'plain');
+  expect(actualPlain3).toEqual(plainJson);
 });

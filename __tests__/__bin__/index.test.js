@@ -36,7 +36,7 @@ describe('json format', () => {
 });
 
 describe('plain format', () => {
-  test('json', () => {
+  test('plain', () => {
     const pathToFile1 = PATH.join(__dirname, '../__fixtures__/before.json');
     const pathToFile2 = PATH.join(__dirname, '../__fixtures__/after.json');
 

@@ -4,23 +4,20 @@ const stringify = (value) => {
   return value;
 };
 
+const data = {
+  changed: (type, oldValue, newValue) => ({ type, oldValue, newValue }),
+  add: (type, oldValue, newValue) => ({ type, value: newValue }),
+  remove: (type, oldValue) => ({ type, value: oldValue }),
+};
+
 const render = (ast) => {
   const result = ast.reduce((acc, item) => {
-    const { type, key, oldValue } = item;
-    let newAcc;
-    if (type === 'changed') {
-      newAcc = { ...acc, [key]: { type, oldValue, newValue: item.newValue } };
-    }
-    if (type === 'add') {
-      newAcc = { ...acc, [key]: { type, value: item.newValue } };
-    }
-    if (type === 'remove') {
-      newAcc = { ...acc, [key]: { type, value: oldValue } };
-    }
-    if (item.children) {
-      newAcc = { ...acc, [key]: render(item.children) };
-    }
-    return newAcc;
+    const {
+      type, key, oldValue, newValue, children,
+    } = item;
+    if (!children && type === 'unchanged') return acc;
+    return children ? { ...acc, [key]: render(children) }
+      : { ...acc, [key]: data[type](type, oldValue, newValue) };
   }, {});
   return result;
 };

@@ -33,6 +33,11 @@
     }
   },
   "group1": {
+    "baz": {
+      "type": "changed",
+      "oldValue": "bas",
+      "newValue": "bars"
+    },
     "nest": {
       "type": "changed",
       "oldValue": {

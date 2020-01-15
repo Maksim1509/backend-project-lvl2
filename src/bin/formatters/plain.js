@@ -9,24 +9,24 @@ const buildKeyLine = (key, item) => {
 };
 
 const buildSting = {
-  add: (keyLIne, oldValue, newValue) => `Property '${keyLIne}' was added whith value: ${stringify(newValue)}`,
-  remove: (keyLIne) => `Property '${keyLIne}' was removed`,
+  add: (keyLine, oldValue, newValue) => `Property '${keyLine}' was added whith value: ${stringify(newValue)}`,
+  remove: (keyLine) => `Property '${keyLine}' was removed`,
   changed:
-   (keyLIne, oldValue, newValue) => (
-     `Property '${keyLIne}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`),
+   (keyLine, oldValue, newValue) => (
+     `Property '${keyLine}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`),
   unchanged: () => null,
 };
 
 const render = (ast, key) => {
   const result = ast.reduce((acc, item) => {
-    const keyLIne = buildKeyLine(key, item);
+    const keyLine = buildKeyLine(key, item);
     const {
       type, children, oldValue, newValue,
     } = item;
 
-    if (children) return acc.concat(render(children, keyLIne));
+    if (children) return acc.concat(render(children, keyLine));
 
-    const newAcc = buildSting[type](keyLIne, oldValue, newValue);
+    const newAcc = buildSting[type](keyLine, oldValue, newValue);
     return acc.concat(newAcc);
   }, []);
   return result;

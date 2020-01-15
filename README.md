@@ -18,6 +18,6 @@ Description: Compares two configuration files and shows a difference.
 </div>
 <div cursor="pointer">
     <a href="https://asciinema.org/a/Melwx8ACATJGpNxyZLke05m6q" target="_blank">
-        <img src="https://asciinema.org/a/Melwx8ACATJGpNxyZLke05m6q" height="250px" width="500px"/>
+        <img src="https://asciinema.org/a/Melwx8ACATJGpNxyZLke05m6q.svg" height="250px" width="500px"/>
     </a>
 </div>

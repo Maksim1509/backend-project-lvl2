@@ -8,6 +8,6 @@ Description: Compares two configuration files and shows a difference.
 
 <div cursor="pointer">
     <a href="https://asciinema.org/a/0HUM1OAO25SkSuDqdJZX6AoMK" target="_blank">
-        <img src="https://asciinema.org/a/0HUM1OAO25SkSuDqdJZX6AoMK.svg" height="250px" width="500px"/>
+        <img src="https://asciinema.org/a/0HUM1OAO25SkSuDqdJZX6AoMK.svg" height="350px" width="500px"/>
     </a>
 </div>

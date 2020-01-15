@@ -2,67 +2,36 @@ import fs from 'fs';
 import PATH from 'path';
 import getDiff from '../../src/bin/getDiff';
 
+const formatJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_json_expected.txt'), 'utf-8');
+const plainJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_plain_expected.txt'), 'utf-8');
 
-describe('json format', () => {
-  test('json', () => {
-    const pathToFile1 = PATH.join(__dirname, '../__fixtures__/before.json');
-    const pathToFile2 = PATH.join(__dirname, '../__fixtures__/after.json');
+const beforeJSON = PATH.join(__dirname, '../__fixtures__/before.json');
+const afterJSON = PATH.join(__dirname, '../__fixtures__/after.json');
 
-    const formatJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_json_expected.txt'), 'utf-8');
+const beforeYAML = PATH.join(__dirname, '../__fixtures__/1.yaml');
+const afterYAML = PATH.join(__dirname, '../__fixtures__/2.yaml');
 
-    const actual = getDiff(pathToFile1, pathToFile2, 'json');
-    expect(actual).toEqual(formatJson);
-  });
+const beforeINI = PATH.join(__dirname, '../__fixtures__/1.ini');
+const afterINI = PATH.join(__dirname, '../__fixtures__/2.ini');
 
-  test('yaml', () => {
-    const pathToFile1 = PATH.join(__dirname, '../__fixtures__/1.yaml');
-    const pathToFile2 = PATH.join(__dirname, '../__fixtures__/2.yaml');
+test('json', () => {
+  const actual1 = getDiff(beforeJSON, afterJSON, 'json');
+  expect(actual1).toEqual(formatJson);
 
-    const formatJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_json_expected.txt'), 'utf-8');
+  const actual2 = getDiff(beforeYAML, afterYAML, 'json');
+  expect(actual2).toEqual(formatJson);
 
-    const actual = getDiff(pathToFile1, pathToFile2, 'json');
-    expect(actual).toEqual(formatJson);
-  });
-
-  test('ini', () => {
-    const pathToFile1 = PATH.join(__dirname, '../__fixtures__/1.ini');
-    const pathToFile2 = PATH.join(__dirname, '../__fixtures__/2.ini');
-
-    const formatJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_json_expected.txt'), 'utf-8');
-
-    const actual = getDiff(pathToFile1, pathToFile2, 'json');
-    expect(actual).toEqual(formatJson);
-  });
+  const actual3 = getDiff(beforeINI, afterINI, 'json');
+  expect(actual3).toEqual(formatJson);
 });
 
-describe('plain format', () => {
-  test('plain', () => {
-    const pathToFile1 = PATH.join(__dirname, '../__fixtures__/before.json');
-    const pathToFile2 = PATH.join(__dirname, '../__fixtures__/after.json');
+test('plain', () => {
+  const actual1 = getDiff(beforeJSON, afterJSON, 'plain');
+  expect(actual1).toEqual(plainJson);
 
-    const plainJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_plain_expected.txt'), 'utf-8');
+  const actual2 = getDiff(beforeYAML, afterYAML, 'plain');
+  expect(actual2).toEqual(plainJson);
 
-    const actual = getDiff(pathToFile1, pathToFile2, 'plain');
-    expect(actual).toEqual(plainJson);
-  });
-
-  test('yaml', () => {
-    const pathToFile1 = PATH.join(__dirname, '../__fixtures__/1.yaml');
-    const pathToFile2 = PATH.join(__dirname, '../__fixtures__/2.yaml');
-
-    const plainJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_plain_expected.txt'), 'utf-8');
-
-    const actual = getDiff(pathToFile1, pathToFile2, 'plain');
-    expect(actual).toEqual(plainJson);
-  });
-
-  test('ini', () => {
-    const pathToFile1 = PATH.join(__dirname, '../__fixtures__/1.ini');
-    const pathToFile2 = PATH.join(__dirname, '../__fixtures__/2.ini');
-
-    const plainJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_plain_expected.txt'), 'utf-8');
-
-    const actual = getDiff(pathToFile1, pathToFile2, 'plain');
-    expect(actual).toEqual(plainJson);
-  });
+  const actual3 = getDiff(beforeINI, afterINI, 'plain');
+  expect(actual3).toEqual(plainJson);
 });

@@ -14,7 +14,7 @@ const afterYAML = PATH.join(__dirname, '../__fixtures__/2.yaml');
 const beforeINI = PATH.join(__dirname, '../__fixtures__/1.ini');
 const afterINI = PATH.join(__dirname, '../__fixtures__/2.ini');
 
-test('json', () => {
+test('main tests', () => {
   const actualJSON1 = getDiff(beforeJSON, afterJSON, 'json');
   expect(actualJSON1).toEqual(formatJson);
 
@@ -23,9 +23,7 @@ test('json', () => {
 
   const actualJSON3 = getDiff(beforeINI, afterINI, 'json');
   expect(actualJSON3).toEqual(formatJson);
-});
 
-test('plain', () => {
   const actualPlain1 = getDiff(beforeJSON, afterJSON, 'plain');
   expect(actualPlain1).toEqual(plainJson);
 

@@ -16,8 +16,8 @@ const render = (ast) => {
       type, key, oldValue, newValue, children,
     } = item;
     if (!children && type === 'unchanged') return acc;
-    return children ? { ...acc, [key]: render(children) }
-      : { ...acc, [key]: data[type](type, oldValue, newValue) };
+    if (children) return { ...acc, [key]: render(children) };
+    return { ...acc, [key]: data[type](type, oldValue, newValue) };
   }, {});
   return result;
 };

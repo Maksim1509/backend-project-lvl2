@@ -1,18 +1,22 @@
 import fs from 'fs';
-import { has } from 'lodash';
+import { has, union } from 'lodash';
 import parser from './parser';
 import plainFormating from './formatters/plain';
 import jsonFormating from './formatters/jsonFormatter';
 
-const mapped = (key, beforeData, afterData) => {
-  switch (true) {
-    case (has(beforeData, key) && has(afterData, key)):
-      if (typeof beforeData[key] === 'object' && typeof afterData[key] === 'object') return 'unchanged';
-      return (beforeData[key] === afterData[key]) ? 'unchanged' : 'changed';
-    case has(afterData, key): return 'add';
-    default: return 'remove';
-  }
-};
+const getType = [{
+  type: 'add',
+  check: (key, beforeData, afterData) => !has(beforeData, key) && has(afterData, key),
+}, {
+  type: 'remove',
+  check: (key, beforeData, afterData) => has(beforeData, key) && !has(afterData, key),
+}, {
+  type: 'unchanged',
+  check: (key, beforeData, afterData) => beforeData[key] === afterData[key],
+}, {
+  type: 'changed',
+  check: (key, beforeData, afterData) => beforeData[key] !== afterData[key],
+}];
 
 const getFormatter = {
   plain: plainFormating,
@@ -20,19 +24,14 @@ const getFormatter = {
 };
 
 const getDifferenceAst = (firstData, secondData) => {
-  const keys = Object.keys(firstData);
-  const differentKeys = Object.keys(secondData).filter((key) => !keys.includes(key));
-  const totalKeys = keys.concat(differentKeys);
+  const unaitedKeys = union(Object.keys(firstData), Object.keys(secondData));
 
-  const difference = totalKeys.reduce((acc, key) => {
-    const type = mapped(key, firstData, secondData);
+  const difference = unaitedKeys.reduce((acc, key) => {
+    const { type } = getType.find(({ check }) => check(key, firstData, secondData));
+    const children = typeof firstData[key] === 'object' && typeof secondData[key] === 'object'
+      ? getDifferenceAst(firstData[key], secondData[key]) : '';
     return [...acc, {
-      type,
-      key,
-      children: typeof firstData[key] === 'object' && typeof secondData[key] === 'object'
-        ? getDifferenceAst(firstData[key], secondData[key]) : '',
-      oldValue: firstData[key],
-      newValue: secondData[key],
+      type, key, children, oldValue: firstData[key], newValue: secondData[key],
     }];
   }, []);
   return difference;

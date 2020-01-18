@@ -16,3 +16,5 @@ gendiff
   });
 
 gendiff.parse(process.argv);
+
+export default getDiff;

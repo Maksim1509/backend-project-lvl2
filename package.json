@@ -2,7 +2,7 @@
   "name": "gendiff443",
   "version": "1.0.3",
   "description": "Compares two configuration files and shows a difference.",
-  "main": "dist/bin/getDiff.js",
+  "main": "dist/bin/index.js",
   "bin": {
     "gendiff": "dist/bin/index.js"
   },

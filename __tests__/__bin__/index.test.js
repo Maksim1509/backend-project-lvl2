@@ -1,35 +1,50 @@
-import fs from 'fs';
+import { readFileSync } from 'fs';
 import PATH from 'path';
-import getDiff from '../../src/getDiff';
+import getDiff from '../../src/bin/index';
 
-const formatJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_json_expected.txt'), 'utf-8');
-const plainJson = fs.readFileSync(PATH.join(__dirname, '../__fixtures__/format_plain_expected.txt'), 'utf-8');
+const pathToFixtures = PATH.join(__dirname, '../__fixtures__/');
 
-const beforeJSON = PATH.join(__dirname, '../__fixtures__/before.json');
-const afterJSON = PATH.join(__dirname, '../__fixtures__/after.json');
+let formatJsonExpected;
+let formatPlainExpected;
+let firstData;
+let secondData;
+let actual;
 
-const beforeYAML = PATH.join(__dirname, '../__fixtures__/1.yaml');
-const afterYAML = PATH.join(__dirname, '../__fixtures__/2.yaml');
+beforeEach(() => {
+  formatJsonExpected = readFileSync(`${pathToFixtures}format_json_expected.txt`, 'utf-8');
+  formatPlainExpected = readFileSync(PATH.join(`${pathToFixtures}format_plain_expected.txt`), 'utf-8');
+});
 
-const beforeINI = PATH.join(__dirname, '../__fixtures__/1.ini');
-const afterINI = PATH.join(__dirname, '../__fixtures__/2.ini');
+test('compare json', () => {
+  firstData = `${pathToFixtures}before.json`;
+  secondData = `${pathToFixtures}after.json`;
+  actual = getDiff(firstData, secondData, 'json');
+  expect(actual).toEqual(formatJsonExpected);
 
-test('main tests', () => {
-  const actualJSON1 = getDiff(beforeJSON, afterJSON, 'json');
-  expect(actualJSON1).toEqual(formatJson);
+  firstData = `${pathToFixtures}1.yaml`;
+  secondData = `${pathToFixtures}2.yaml`;
+  actual = getDiff(firstData, secondData, 'json');
+  expect(actual).toEqual(formatJsonExpected);
 
-  const actualJSON2 = getDiff(beforeYAML, afterYAML, 'json');
-  expect(actualJSON2).toEqual(formatJson);
+  firstData = `${pathToFixtures}1.ini`;
+  secondData = `${pathToFixtures}2.ini`;
+  actual = getDiff(firstData, secondData, 'json');
+  expect(actual).toEqual(formatJsonExpected);
+});
 
-  const actualJSON3 = getDiff(beforeINI, afterINI, 'json');
-  expect(actualJSON3).toEqual(formatJson);
+test('compare plain', () => {
+  firstData = `${pathToFixtures}before.json`;
+  secondData = `${pathToFixtures}after.json`;
+  actual = getDiff(firstData, secondData);
+  expect(actual).toEqual(formatPlainExpected);
 
-  const actualPlain1 = getDiff(beforeJSON, afterJSON, 'plain');
-  expect(actualPlain1).toEqual(plainJson);
+  firstData = `${pathToFixtures}1.yaml`;
+  secondData = `${pathToFixtures}2.yaml`;
+  actual = getDiff(firstData, secondData);
+  expect(actual).toEqual(formatPlainExpected);
 
-  const actualPlain2 = getDiff(beforeYAML, afterYAML, 'plain');
-  expect(actualPlain2).toEqual(plainJson);
-
-  const actualPlain3 = getDiff(beforeINI, afterINI, 'plain');
-  expect(actualPlain3).toEqual(plainJson);
+  firstData = `${pathToFixtures}1.ini`;
+  secondData = `${pathToFixtures}2.ini`;
+  actual = getDiff(firstData, secondData);
+  expect(actual).toEqual(formatPlainExpected);
 });

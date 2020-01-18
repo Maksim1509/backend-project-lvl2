@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs';
 import PATH from 'path';
-import getDiff from '../../src/bin/index';
+import getDiff from '../src/bin/index';
 
-const pathToFixtures = PATH.join(__dirname, '../__fixtures__/');
+const pathToFixtures = PATH.join(__dirname, '/__fixtures__/');
 
 let formatJsonExpected;
 let formatPlainExpected;

@@ -17,7 +17,7 @@ const buildSting = {
   unchanged: () => null,
 };
 
-const render = (ast, key) => {
+const render = (ast, key = '') => {
   const result = ast.reduce((acc, item) => {
     const keyLine = buildKeyLine(key, item);
     const {

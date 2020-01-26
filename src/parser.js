@@ -1,4 +1,3 @@
-import path from 'path';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
@@ -8,4 +7,4 @@ const selectParser = {
   ini: ini.parse,
 };
 
-export default (file) => selectParser[path.extname(file).slice(1)];
+export default (dataType) => selectParser[dataType];

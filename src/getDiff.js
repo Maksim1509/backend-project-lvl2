@@ -1,8 +1,9 @@
 import fs from 'fs';
+import path from 'path';
 import { has, union } from 'lodash';
-import parser from './parser';
-import plainFormating from './formatters/plain';
-import jsonFormating from './formatters/jsonFormatter';
+import getParser from './parser';
+import formatter from './formatters/index';
+
 
 const getType = [{
   type: 'add',
@@ -17,11 +18,6 @@ const getType = [{
   type: 'changed',
   check: (key, beforeData, afterData) => beforeData[key] !== afterData[key],
 }];
-
-const getFormatter = {
-  plain: plainFormating,
-  json: jsonFormating,
-};
 
 const getDifferenceAst = (firstData, secondData) => {
   const unaitedKeys = union(Object.keys(firstData), Object.keys(secondData));
@@ -38,16 +34,16 @@ const getDifferenceAst = (firstData, secondData) => {
 };
 
 export default (pathToFirstFile, pathToSecondFile, format = 'plain') => {
-  const firstFile = fs.readFileSync(pathToFirstFile, 'utf8');
-  const secondFile = fs.readFileSync(pathToSecondFile, 'utf-8');
+  const firstData = fs.readFileSync(pathToFirstFile, 'utf8');
+  const secondData = fs.readFileSync(pathToSecondFile, 'utf-8');
 
-  const firstParser = parser(pathToFirstFile);
-  const secondParser = parser(pathToSecondFile);
+  const firstDataType = path.extname(pathToFirstFile).slice(1);
+  const secondDataType = path.extname(pathToSecondFile).slice(1);
 
-  const firstData = firstParser(firstFile);
-  const secondData = secondParser(secondFile);
+  const firstParseredData = getParser(firstDataType)(firstData);
+  const secondParseredData = getParser(secondDataType)(secondData);
 
-  const difference = getDifferenceAst(firstData, secondData);
-  const formatter = getFormatter[format];
-  return formatter(difference, '');
+  const differenceAst = getDifferenceAst(firstParseredData, secondParseredData);
+
+  return formatter(differenceAst, format);
 };

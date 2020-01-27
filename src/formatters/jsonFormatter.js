@@ -5,20 +5,17 @@ const stringify = (value) => {
 };
 
 const data = {
-  changed: (type, oldValue, newValue) => ({ type, oldValue, newValue }),
-  add: (type, oldValue, newValue) => ({ type, value: newValue }),
-  remove: (type, oldValue) => ({ type, value: oldValue }),
+  changed: ({ type, oldValue, newValue }) => ({ type, oldValue, newValue }),
+  add: ({ type, newValue }) => ({ type, value: newValue }),
+  remove: ({ type, oldValue }) => ({ type, value: oldValue }),
+  hasChildren: ({ children }, f) => f(children),
+  unchanged: ({ type, oldValue }) => ({ type, value: oldValue }),
 };
 
 const render = (ast) => {
-  const result = ast.reduce((acc, item) => {
-    const {
-      type, key, oldValue, newValue, children,
-    } = item;
-    if (type === 'unchanged') return acc;
-    if (children) return { ...acc, [key]: render(children) };
-    return { ...acc, [key]: data[type](type, oldValue, newValue) };
-  }, {});
+  const result = ast.reduce(
+    (acc, item) => ({ ...acc, [item.key]: data[item.type](item, render) }), {},
+  );
   return result;
 };
 

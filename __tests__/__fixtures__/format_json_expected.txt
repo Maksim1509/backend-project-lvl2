@@ -1,5 +1,9 @@
 {
   "common": {
+    "setting1": {
+      "type": "unchanged",
+      "value": "Value 1"
+    },
     "setting2": {
       "type": "remove",
       "value": 200
@@ -12,6 +16,10 @@
       }
     },
     "setting6": {
+      "key": {
+        "type": "unchanged",
+        "value": "value"
+      },
       "ops": {
         "type": "add",
         "value": "vops"
@@ -37,6 +45,10 @@
       "type": "changed",
       "oldValue": "bas",
       "newValue": "bars"
+    },
+    "foo": {
+      "type": "unchanged",
+      "value": "bar"
     },
     "nest": {
       "type": "changed",

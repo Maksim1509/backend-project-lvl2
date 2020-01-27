@@ -5,31 +5,47 @@ import getParser from './parser';
 import formatter from './formatters/index';
 
 
-const getType = [{
-  type: 'add',
-  check: (key, beforeData, afterData) => !has(beforeData, key) && has(afterData, key),
-}, {
-  type: 'remove',
-  check: (key, beforeData, afterData) => has(beforeData, key) && !has(afterData, key),
-}, {
-  type: 'unchanged',
-  check: (key, beforeData, afterData) => beforeData[key] === afterData[key],
-}, {
-  type: 'changed',
-  check: (key, beforeData, afterData) => beforeData[key] !== afterData[key],
-}];
+const getType = [
+  {
+    type: 'add',
+    check: (key, beforeData, afterData) => !has(beforeData, key) && has(afterData, key),
+    process: () => '',
+  }, {
+    type: 'remove',
+    check: (key, beforeData, afterData) => has(beforeData, key) && !has(afterData, key),
+    process: () => '',
+  }, {
+    type: 'unchanged',
+    check: (key, beforeData, afterData) => beforeData[key] === afterData[key],
+    process: () => '',
+  }, {
+    type: 'hasChildren',
+    check: (key, beforeData, afterData) => typeof beforeData[key] === 'object' && typeof afterData[key] === 'object',
+    process: (firstChild, secondChild, f) => f(firstChild, secondChild),
+  }, {
+    type: 'changed',
+    check: (key, beforeData, afterData) => beforeData[key] !== afterData[key],
+    process: () => '',
+  },
+];
+
+const getTypeAction = (key, firstData, secondData) => getType.find(
+  ({ check }) => check(key, firstData, secondData),
+);
 
 const getDifferenceAst = (firstData, secondData) => {
   const unaitedKeys = union(Object.keys(firstData), Object.keys(secondData));
 
-  const difference = unaitedKeys.reduce((acc, key) => {
-    const { type } = getType.find(({ check }) => check(key, firstData, secondData));
-    const children = typeof firstData[key] === 'object' && typeof secondData[key] === 'object'
-      ? getDifferenceAst(firstData[key], secondData[key]) : '';
-    return [...acc, {
-      type, key, children, oldValue: firstData[key], newValue: secondData[key],
-    }];
-  }, []);
+  const difference = unaitedKeys.map((key) => {
+    const { type, process } = getTypeAction(key, firstData, secondData);
+    const oldValue = firstData[key];
+    const newValue = secondData[key];
+    const children = process(firstData[key], secondData[key], getDifferenceAst);
+    const astNode = {
+      type, key, children, oldValue, newValue,
+    };
+    return astNode;
+  });
   return difference;
 };
 
@@ -44,6 +60,5 @@ export default (pathToFirstFile, pathToSecondFile, format = 'plain') => {
   const secondParseredData = getParser(secondDataType)(secondData);
 
   const differenceAst = getDifferenceAst(firstParseredData, secondParseredData);
-
   return formatter(differenceAst, format);
 };

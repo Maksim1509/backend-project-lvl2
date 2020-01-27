@@ -23,7 +23,8 @@ const buildSting = {
 const render = (ast, key = '') => {
   const result = ast.map((item) => {
     const keyLine = buildKeyLine(key, item);
-    return buildSting[item.type](keyLine, item, render);
+    const processToBuildString = buildSting[item.type];
+    return processToBuildString(keyLine, item, render);
   });
   return flatten(result);
 };

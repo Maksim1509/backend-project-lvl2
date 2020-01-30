@@ -2,30 +2,35 @@ import fs from 'fs';
 import path from 'path';
 import { has, union } from 'lodash';
 import getParser from './parser';
-import formatter from './formatters/index';
-
+import render from './formatters/index';
 
 const getType = [
   {
     type: 'add',
-    check: (key, beforeData, afterData) => !has(beforeData, key) && has(afterData, key),
-    process: () => '',
+    check: (key, firstData, secondData) => !has(firstData, key) && has(secondData, key),
+    getNode: ({ type, key, secondData }) => ({ type, key, newValue: secondData[key] }),
   }, {
     type: 'remove',
-    check: (key, beforeData, afterData) => has(beforeData, key) && !has(afterData, key),
-    process: () => '',
+    check: (key, firstData, secondData) => has(firstData, key) && !has(secondData, key),
+    getNode: ({ type, key, firstData }) => ({ type, key, oldValue: firstData[key] }),
   }, {
     type: 'unchanged',
-    check: (key, beforeData, afterData) => beforeData[key] === afterData[key],
-    process: () => '',
+    check: (key, firstData, secondData) => firstData[key] === secondData[key],
+    getNode: ({ type, key, firstData }) => ({ type, key, oldValue: firstData[key] }),
   }, {
     type: 'hasChildren',
-    check: (key, beforeData, afterData) => typeof beforeData[key] === 'object' && typeof afterData[key] === 'object',
-    process: (firstChild, secondChild, f) => f(firstChild, secondChild),
+    check: (key, firstData, secondData) => typeof firstData[key] === 'object' && typeof secondData[key] === 'object',
+    getNode: ({
+      type, key, firstData, secondData, getDifferenceAst,
+    }) => ({ type, key, children: getDifferenceAst(firstData[key], secondData[key]) }),
   }, {
     type: 'changed',
-    check: (key, beforeData, afterData) => beforeData[key] !== afterData[key],
-    process: () => '',
+    check: (key, firstData, secondData) => firstData[key] !== secondData[key],
+    getNode: ({
+      type, key, firstData, secondData,
+    }) => ({
+      type, key, oldValue: firstData[key], newValue: secondData[key],
+    }),
   },
 ];
 
@@ -37,13 +42,10 @@ const getDifferenceAst = (firstData, secondData) => {
   const unaitedKeys = union(Object.keys(firstData), Object.keys(secondData));
 
   const difference = unaitedKeys.map((key) => {
-    const { type, process } = getTypeAction(key, firstData, secondData);
-    const oldValue = firstData[key];
-    const newValue = secondData[key];
-    const children = process(firstData[key], secondData[key], getDifferenceAst);
-    const astNode = {
-      type, key, children, oldValue, newValue,
-    };
+    const { type, getNode } = getTypeAction(key, firstData, secondData);
+    const astNode = getNode({
+      type, key, firstData, secondData, getDifferenceAst,
+    });
     return astNode;
   });
   return difference;
@@ -60,5 +62,5 @@ export default (pathToFirstFile, pathToSecondFile, format = 'plain') => {
   const secondParseredData = getParser(secondDataType)(secondData);
 
   const differenceAst = getDifferenceAst(firstParseredData, secondParseredData);
-  return formatter(differenceAst, format);
+  return render(differenceAst, format);
 };

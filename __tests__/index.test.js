@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import path from 'path';
 import getDiff from '../src';
 
-const getPath = (fileName) => path.join(__dirname, `/__fixtures__/${fileName}`);
+const getPath = (fileName) => path.join(__dirname, '__fixtures__', fileName);
 
 let formatJsonExpected;
 let formatPlainExpected;

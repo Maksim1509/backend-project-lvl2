@@ -10,11 +10,13 @@ const stringify = (value, spaces) => {
   return value;
 };
 
+const buildString = (key, value, spaces, sign, func) => `${spaces.slice(2)}${sign} ${key}: ${func(value, spaces)}`;
+
 const getString = {
   hasChildren: ({ key, children }, spaсeLine, f) => `${spaсeLine}${key}: ${f(children, spaсeLine)}`,
   unchanged: ({ key, oldValue }, spaceLine) => `${spaceLine}${key}: ${stringify(oldValue, spaceLine)}`,
-  add: ({ key, newValue }, spaceLine) => `${spaceLine.slice(2)}+ ${key}: ${stringify(newValue, spaceLine)}`,
-  remove: ({ key, oldValue }, spaceLine) => `${spaceLine.slice(2)}- ${key}: ${stringify(oldValue, spaceLine)}`,
+  add: ({ key, newValue }, spaceLine) => buildString(key, newValue, spaceLine, '+', stringify),
+  remove: ({ key, oldValue }, spaceLine) => buildString(key, oldValue, spaceLine, '-', stringify),
   changed: ({ key, oldValue, newValue }, spaceLine) => `${spaceLine.slice(2)}- ${key}: ${stringify(oldValue, spaceLine)}
 ${spaceLine.slice(2)}+ ${key}: ${stringify(newValue, spaceLine)}`,
 };

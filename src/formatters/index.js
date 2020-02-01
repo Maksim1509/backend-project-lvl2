@@ -8,4 +8,4 @@ const getFormatter = {
   default: defaultFormatter,
 };
 
-export default (differenceAst, format = 'default') => getFormatter[format](differenceAst);
+export default (differenceAst, format) => getFormatter[format](differenceAst);

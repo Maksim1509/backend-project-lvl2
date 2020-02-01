@@ -51,7 +51,7 @@ const getDifferenceAst = (firstData, secondData) => {
   return difference;
 };
 
-export default (pathToFirstFile, pathToSecondFile, format = 'plain') => {
+export default (pathToFirstFile, pathToSecondFile, format = 'default') => {
   const firstData = fs.readFileSync(pathToFirstFile, 'utf8');
   const secondData = fs.readFileSync(pathToSecondFile, 'utf-8');
 

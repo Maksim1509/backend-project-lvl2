@@ -1,73 +1,98 @@
-{
-  "common": {
-    "setting1": {
-      "type": "unchanged",
-      "value": "Value 1"
-    },
-    "setting2": {
-      "type": "remove",
-      "value": 200
-    },
-    "setting3": {
-      "type": "changed",
-      "oldValue": true,
-      "newValue": {
-        "key": "value"
-      }
-    },
-    "setting6": {
-      "key": {
+[
+  {
+    "type": "hasChildren",
+    "key": "common",
+    "children": [
+      {
         "type": "unchanged",
-        "value": "value"
+        "key": "setting1",
+        "oldValue": "Value 1"
       },
-      "ops": {
+      {
+        "type": "remove",
+        "key": "setting2",
+        "oldValue": 200
+      },
+      {
+        "type": "changed",
+        "key": "setting3",
+        "oldValue": true,
+        "newValue": {
+          "key": "value"
+        }
+      },
+      {
+        "type": "hasChildren",
+        "key": "setting6",
+        "children": [
+          {
+            "type": "unchanged",
+            "key": "key",
+            "oldValue": "value"
+          },
+          {
+            "type": "add",
+            "key": "ops",
+            "newValue": "vops"
+          }
+        ]
+      },
+      {
         "type": "add",
-        "value": "vops"
-      }
-    },
-    "follow": {
-      "type": "add",
-      "value": false
-    },
-    "setting4": {
-      "type": "add",
-      "value": "blah blah"
-    },
-    "setting5": {
-      "type": "add",
-      "value": {
-        "key5": "value5"
-      }
-    }
-  },
-  "group1": {
-    "baz": {
-      "type": "changed",
-      "oldValue": "bas",
-      "newValue": "bars"
-    },
-    "foo": {
-      "type": "unchanged",
-      "value": "bar"
-    },
-    "nest": {
-      "type": "changed",
-      "oldValue": {
-        "key": "value"
+        "key": "follow",
+        "newValue": false
       },
-      "newValue": "str"
-    }
+      {
+        "type": "add",
+        "key": "setting4",
+        "newValue": "blah blah"
+      },
+      {
+        "type": "add",
+        "key": "setting5",
+        "newValue": {
+          "key5": "value5"
+        }
+      }
+    ]
   },
-  "group2": {
+  {
+    "type": "hasChildren",
+    "key": "group1",
+    "children": [
+      {
+        "type": "changed",
+        "key": "baz",
+        "oldValue": "bas",
+        "newValue": "bars"
+      },
+      {
+        "type": "unchanged",
+        "key": "foo",
+        "oldValue": "bar"
+      },
+      {
+        "type": "changed",
+        "key": "nest",
+        "oldValue": {
+          "key": "value"
+        },
+        "newValue": "str"
+      }
+    ]
+  },
+  {
     "type": "remove",
-    "value": {
+    "key": "group2",
+    "oldValue": {
       "abc": 12345
     }
   },
-  "group3": {
+  {
     "type": "add",
-    "value": {
+    "key": "group3",
+    "newValue": {
       "fee": 0
     }
   }
-}
+]

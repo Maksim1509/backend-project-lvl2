@@ -4,19 +4,21 @@ import { has, union } from 'lodash';
 import getParser from './parser';
 import render from './formatters/index';
 
+const buildNode = (type, key, dataKey, data) => ({ type, key, [dataKey]: data[key] });
+
 const getType = [
   {
     type: 'add',
     check: (key, firstData, secondData) => !has(firstData, key) && has(secondData, key),
-    getNode: ({ type, key, secondData }) => ({ type, key, newValue: secondData[key] }),
+    getNode: ({ type, key, secondData }) => buildNode(type, key, 'newValue', secondData),
   }, {
     type: 'remove',
     check: (key, firstData, secondData) => has(firstData, key) && !has(secondData, key),
-    getNode: ({ type, key, firstData }) => ({ type, key, oldValue: firstData[key] }),
+    getNode: ({ type, key, firstData }) => buildNode(type, key, 'oldValue', firstData),
   }, {
     type: 'unchanged',
     check: (key, firstData, secondData) => firstData[key] === secondData[key],
-    getNode: ({ type, key, firstData }) => ({ type, key, oldValue: firstData[key] }),
+    getNode: ({ type, key, firstData }) => buildNode(type, key, 'oldValue', firstData),
   }, {
     type: 'hasChildren',
     check: (key, firstData, secondData) => typeof firstData[key] === 'object' && typeof secondData[key] === 'object',

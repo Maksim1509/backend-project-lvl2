@@ -1,52 +1,26 @@
 import { readFileSync } from 'fs';
+import _ from 'lodash';
 import path from 'path';
 import getDiff from '../src';
 
 const getPath = (fileName) => path.join(__dirname, '__fixtures__', fileName);
-
-let formatDefaultExpected;
-let formatJsonExpected;
-let formatPlainExpected;
-let firstData;
-let secondData;
-let actualDefault;
-let actualJson;
-let actualPlain;
+let expected;
 
 beforeEach(() => {
-  formatDefaultExpected = readFileSync(getPath('expected.txt'), 'utf-8');
-  formatJsonExpected = readFileSync(getPath('format_json_expected.txt'), 'utf-8');
-  formatPlainExpected = readFileSync(getPath('format_plain_expected.txt'), 'utf-8');
+  expected = {
+    stylish: readFileSync(getPath('expected.txt'), 'utf-8'),
+    json: readFileSync(getPath('format_json_expected.txt'), 'utf-8'),
+    plain: readFileSync(getPath('format_plain_expected.txt'), 'utf-8'),
+  };
 });
 
-test('main tests', () => {
-  firstData = getPath('before.json');
-  secondData = getPath('after.json');
-  actualDefault = getDiff(firstData, secondData);
-  actualJson = getDiff(firstData, secondData, 'json');
-  actualPlain = getDiff(firstData, secondData, 'plain');
+const types = ['json', 'yaml', 'ini'];
+const formatters = ['stylish', 'plain', 'json'];
+const dataForTests = types.map((type) => formatters.map((format) => [type, format])).flat();
 
-  expect(actualDefault).toEqual(formatDefaultExpected);
-  expect(actualJson).toEqual(formatJsonExpected);
-  expect(actualPlain).toEqual(formatPlainExpected);
-
-  firstData = getPath('1.yaml');
-  secondData = getPath('2.yaml');
-  actualDefault = getDiff(firstData, secondData);
-  actualJson = getDiff(firstData, secondData, 'json');
-  actualPlain = getDiff(firstData, secondData, 'plain');
-
-  expect(actualDefault).toEqual(formatDefaultExpected);
-  expect(actualJson).toEqual(formatJsonExpected);
-  expect(actualPlain).toEqual(formatPlainExpected);
-
-  firstData = getPath('1.ini');
-  secondData = getPath('2.ini');
-  actualDefault = getDiff(firstData, secondData);
-  actualJson = getDiff(firstData, secondData, 'json');
-  actualPlain = getDiff(firstData, secondData, 'plain');
-
-  expect(actualDefault).toEqual(formatDefaultExpected);
-  expect(actualJson).toEqual(formatJsonExpected);
-  expect(actualPlain).toEqual(formatPlainExpected);
+test.each(dataForTests)('getDiff type: %s, format: %s', (type, format) => {
+  const beforData = getPath(`before.${type}`);
+  const afterData = getPath(`after.${type}`);
+  const actual = getDiff(beforData, afterData, format);
+  expect(actual).toEqual(expected[format]);
 });

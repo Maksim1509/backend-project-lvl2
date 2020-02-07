@@ -1,11 +1,11 @@
-import defaultFormatter from './defaultFormatter';
-import plainFormating from './plain';
+import stylishFormating from './stylishFormatter';
+import plainFormating from './plainFormatter';
 import jsonFormating from './jsonFormatter';
 
 const getFormatter = {
   plain: plainFormating,
   json: jsonFormating,
-  default: defaultFormatter,
+  stylish: stylishFormating,
 };
 
 export default (differenceAst, format) => getFormatter[format](differenceAst);

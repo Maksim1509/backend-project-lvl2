@@ -1,24 +1,22 @@
 import fs from 'fs';
 import path from 'path';
 import { has, union } from 'lodash';
-import getParser from './parser';
+import getParse from './parser';
 import render from './formatters/index';
-
-const buildNode = (type, key, dataKey, data) => ({ type, key, [dataKey]: data[key] });
 
 const getType = [
   {
     type: 'add',
     check: (key, firstData, secondData) => !has(firstData, key) && has(secondData, key),
-    getNode: ({ type, key, secondData }) => buildNode(type, key, 'newValue', secondData),
+    getNode: ({ type, key, secondData }) => ({ type, key, newValue: secondData[key] }),
   }, {
     type: 'remove',
     check: (key, firstData, secondData) => has(firstData, key) && !has(secondData, key),
-    getNode: ({ type, key, firstData }) => buildNode(type, key, 'oldValue', firstData),
+    getNode: ({ type, key, firstData }) => ({ type, key, oldValue: firstData[key] }),
   }, {
     type: 'unchanged',
     check: (key, firstData, secondData) => firstData[key] === secondData[key],
-    getNode: ({ type, key, firstData }) => buildNode(type, key, 'oldValue', firstData),
+    getNode: ({ type, key, firstData }) => ({ type, key, oldValue: firstData[key] }),
   }, {
     type: 'hasChildren',
     check: (key, firstData, secondData) => typeof firstData[key] === 'object' && typeof secondData[key] === 'object',
@@ -53,15 +51,15 @@ const getDifferenceAst = (firstData, secondData) => {
   return difference;
 };
 
-export default (pathToFirstFile, pathToSecondFile, format = 'default') => {
+export default (pathToFirstFile, pathToSecondFile, format = 'stylish') => {
   const firstData = fs.readFileSync(pathToFirstFile, 'utf8');
   const secondData = fs.readFileSync(pathToSecondFile, 'utf-8');
 
   const firstDataType = path.extname(pathToFirstFile).slice(1);
   const secondDataType = path.extname(pathToSecondFile).slice(1);
 
-  const firstParseredData = getParser(firstDataType)(firstData);
-  const secondParseredData = getParser(secondDataType)(secondData);
+  const firstParseredData = getParse(firstDataType)(firstData);
+  const secondParseredData = getParse(secondDataType)(secondData);
 
   const differenceAst = getDifferenceAst(firstParseredData, secondParseredData);
   return render(differenceAst, format);

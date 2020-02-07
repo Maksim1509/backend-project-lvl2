@@ -1,5 +1,4 @@
 import { readFileSync } from 'fs';
-import _ from 'lodash';
 import path from 'path';
 import getDiff from '../src';
 

@@ -7,9 +7,9 @@ let expected;
 
 beforeEach(() => {
   expected = {
-    stylish: readFileSync(getPath('expected.txt'), 'utf-8'),
-    json: readFileSync(getPath('format_json_expected.txt'), 'utf-8'),
-    plain: readFileSync(getPath('format_plain_expected.txt'), 'utf-8'),
+    stylish: readFileSync(getPath('stylish.txt'), 'utf-8'),
+    json: readFileSync(getPath('json.txt'), 'utf-8'),
+    plain: readFileSync(getPath('plain.txt'), 'utf-8'),
   };
 });
 

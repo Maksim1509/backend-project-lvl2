@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
+import _ from 'lodash';
 
-const hasChildren = (value) => typeof value === 'object';
 
 const TypeConversion = (value) => {
   if (!Number(value) && Number(value) !== 0) return value;
@@ -13,7 +13,7 @@ const iniParse = (data) => {
   const parsedData = ini.parse(data);
 
   const iter = (obj) => Object.keys(obj)
-    .reduce((acc, key) => (hasChildren(obj[key])
+    .reduce((acc, key) => (_.isObject(obj[key])
       ? { ...acc, [key]: iter(obj[key]) }
       : { ...acc, [key]: TypeConversion(obj[key]) }), {});
   return iter(parsedData);

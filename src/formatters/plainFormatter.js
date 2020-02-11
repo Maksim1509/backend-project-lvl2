@@ -5,26 +5,26 @@ const stringify = (value) => {
   return typeof value === 'object' ? '[complex value]' : `'${value}'`;
 };
 
-const buildKeyLine = (key, item) => {
-  if (key === '') return item.key;
-  return `${key}.${item.key}`;
+const getAncestry = (ancestry, item) => {
+  if (ancestry === '') return item.key;
+  return `${ancestry}.${item.key}`;
 };
 
 const buildSting = {
-  add: (keyLine, { newValue }) => `Property '${keyLine}' was added whith value: ${stringify(newValue)}`,
-  remove: (keyLine) => `Property '${keyLine}' was removed`,
+  add: (currentAncestry, { newValue }) => `Property '${currentAncestry}' was added whith value: ${stringify(newValue)}`,
+  remove: (currentAncestry) => `Property '${currentAncestry}' was removed`,
   changed:
-   (keyLine, { oldValue, newValue }) => (
-     `Property '${keyLine}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`),
+   (currentAncestry, { oldValue, newValue }) => (
+     `Property '${currentAncestry}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`),
   unchanged: () => null,
-  hasChildren: (keyLine, { children }, f) => f(children, keyLine),
+  hasChildren: (currentAncestry, { children }, f) => f(children, currentAncestry),
 };
 
 const render = (ast, ancestry = '') => {
   const result = ast.map((item) => {
-    const keyLine = buildKeyLine(ancestry, item);
+    const currentAncestry = getAncestry(ancestry, item);
     const processToBuildString = buildSting[item.type];
-    return processToBuildString(keyLine, item, render);
+    return processToBuildString(currentAncestry, item, render);
   });
   return flatten(result);
 };

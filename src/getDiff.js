@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { has, union } from 'lodash';
 import getParse from './parser';
-import render from './formatters/index';
+import render from './formatters';
 
 const getType = [
   {

@@ -6,6 +6,8 @@ const getLineIdent = (depth) => {
   return newLineIdent;
 };
 
+const getShortLineIdent = (depth) => ' '.repeat(4).repeat(depth).slice(2);
+
 const stringify = (value, depth) => {
   if (typeof value !== 'object') return value;
 
@@ -19,16 +21,16 @@ const stringify = (value, depth) => {
 const getString = {
   hasChildren: ({ key, children }, depth, f) => `${getLineIdent(depth)}${key}: ${f(children, depth + 1)}`,
   unchanged: ({ key, oldValue }, depth) => `${getLineIdent(depth)}${key}: ${stringify(oldValue, depth)}`,
-  add: ({ key, newValue }, depth) => `${getLineIdent(depth).slice(2)}+ ${key}: ${stringify(newValue, depth)}`,
-  remove: ({ key, oldValue }, depth) => `${getLineIdent(depth).slice(2)}- ${key}: ${stringify(oldValue, depth)}`,
-  changed: ({ key, oldValue, newValue }, depth) => `${getLineIdent(depth).slice(2)}- ${key}: ${stringify(oldValue, depth)}
-${getLineIdent(depth).slice(2)}+ ${key}: ${stringify(newValue, depth)}`,
+  add: ({ key, newValue }, depth) => `${getShortLineIdent(depth)}+ ${key}: ${stringify(newValue, depth)}`,
+  remove: ({ key, oldValue }, depth) => `${getShortLineIdent(depth)}- ${key}: ${stringify(oldValue, depth)}`,
+  changed: ({ key, oldValue, newValue }, depth) => `${getShortLineIdent(depth)}- ${key}: ${stringify(oldValue, depth)}
+${getShortLineIdent(depth)}+ ${key}: ${stringify(newValue, depth)}`,
 };
 
 const render = (ast) => {
   const iter = (obj, depth) => {
     const string = obj.map((item) => getString[item.type](item, depth, iter));
-    return `{\n${string.join('\n')}\n${getLineIdent(depth).slice(4)}}`;
+    return `{\n${string.join('\n')}\n${getLineIdent(depth - 1)}}`;
   };
   return iter(ast, 1);
 };

@@ -20,13 +20,13 @@ const buildSting = {
   hasChildren: (keyLine, { children }, f) => f(children, keyLine),
 };
 
-const render = (ast, key = '') => {
+const render = (ast, ancestry = '') => {
   const result = ast.map((item) => {
-    const keyLine = buildKeyLine(key, item);
+    const keyLine = buildKeyLine(ancestry, item);
     const processToBuildString = buildSting[item.type];
     return processToBuildString(keyLine, item, render);
   });
   return flatten(result);
 };
 
-export default (ast, key) => render(ast, key).filter((a) => a).join('\n');
+export default (ast, ancestry) => render(ast, ancestry).filter((a) => a).join('\n');

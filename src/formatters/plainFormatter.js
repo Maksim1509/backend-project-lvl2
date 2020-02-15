@@ -5,10 +5,7 @@ const stringify = (value) => {
   return typeof value === 'object' ? '[complex value]' : `'${value}'`;
 };
 
-const getAncestry = (ancestry, item) => {
-  if (ancestry === '') return item.key;
-  return `${ancestry}.${item.key}`;
-};
+const getAncestry = (ancestry, item) => (ancestry ? `${ancestry}.${item.key}` : item.key);
 
 const buildSting = {
   add: (currentAncestry, { newValue }) => `Property '${currentAncestry}' was added whith value: ${stringify(newValue)}`,
@@ -29,4 +26,4 @@ const render = (ast, ancestry = '') => {
   return flatten(result);
 };
 
-export default (ast, ancestry) => render(ast, ancestry).filter((a) => a).join('\n');
+export default (ast) => render(ast).filter((a) => a).join('\n');

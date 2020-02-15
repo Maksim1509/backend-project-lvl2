@@ -3,12 +3,15 @@ import path from 'path';
 import getDiff from '../src';
 
 const getPath = (fileName) => path.join(__dirname, '__fixtures__', fileName);
+let expected;
 
-const expected = {
-  stylish: readFileSync(getPath('stylish.txt'), 'utf-8'),
-  json: readFileSync(getPath('json.txt'), 'utf-8'),
-  plain: readFileSync(getPath('plain.txt'), 'utf-8'),
-};
+beforeAll(() => {
+  expected = {
+    stylish: readFileSync(getPath('stylish.txt'), 'utf-8'),
+    json: readFileSync(getPath('json.txt'), 'utf-8'),
+    plain: readFileSync(getPath('plain.txt'), 'utf-8'),
+  };
+});
 
 const types = ['json', 'yaml', 'ini'];
 const formatters = ['stylish', 'plain', 'json'];
